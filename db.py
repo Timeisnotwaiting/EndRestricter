@@ -12,6 +12,13 @@ async def negate_name(chat_id: int, name: str):
     return await negdb.update_one({"chat_id": chat_id}, {"$set": {"names": negated}}, upsert=True)
 
 async def denegate_name(chat_id: int, name: str):
+    negated = await get_negated_names(chat_id)
+    if not name in negated:
+        return
+    if len(negated) == 1:
+        return
+    negated.remove(name)
+    return await negdb.update_one({"chat_id": chat_id}, {"$set": {"names": negated}}, upsert=True)
 
 
 async def get_negated_names(chat_id: int):
