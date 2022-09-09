@@ -7,3 +7,4 @@ def build_mongo():
     mongo = MongoClient(MONGO_URL)
     return mongo.RES
     
+db = build_mongo
