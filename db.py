@@ -3,7 +3,7 @@ from database import db
 negdb = db.neg
 
 async def negate_name(chat_id: int, name: str):
-    negated = await get_negated_names
+    negated = await negdb.
     if name in negated:
         return
     negated["names"] = name
