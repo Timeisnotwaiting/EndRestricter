@@ -3,10 +3,12 @@ from database import db
 negdb = db.neg
 
 async def negate_name(chat_id: int, name: str):
-    negated = await negdb.
-    if name in negated:
+    negated = await get_negated_names(chat_id)
+    if name in negated and not len(negated) == 0:
         return
-    negated["names"] = name
+    if len(negated) == 0:
+        negated = {"[]{}"}
+    negated.add(name)
     return await negdb.update_one({"chat_id": chat_id}, {"$set": {"names": negated}}, upsert=True)
 
 
