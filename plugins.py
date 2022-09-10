@@ -1,6 +1,7 @@
 from pyrogram import Client
-from pyrogram.types import Message
+from pyrogram.types import Message, CallbackQuery
 from db import *
+from helpers import *
 
 
 async def negate_fn(_, m):
@@ -45,15 +46,24 @@ async def denegate_fn(_, m):
     except Exception as e:
         return await m.reply(f"<i>{e}</i>")
 
-async def blocked_names(_, m):
-    if await is_blocked(m.from_user.id):
-        return
-    mem = await _.get_chat_member(m.chat.id, m.from_user.id)
-    if not mem.status in ["creator", "administrator"]:
-        return
+async def get_blocked_names(m):
     names = await get_negated_names(m.chat.id)
     msg = ""
     for name in names:
         msg += f"{name}\n"
-    return await m.reply(msg)
-    
+    return msg
+
+async def names_cbq(_, q: CallbackQuery):
+    user_id = q.from_user.id
+    chat_id = q.message.chat.id
+    mem = await _.get_chat_member(chat_id, user_id)
+    if not mem.status in ["creator", "administrator"]:
+        return await q.answer("Only Admins can perform this action.", show_alert=True)
+    if await is_blocked(user_id):
+        return
+    names = await get_blocked_names(q.message)
+    if not names:
+        await q.answer("names list is empty..!")
+        return
+    await q.edit_message_text(f"{names}", reply_markup=_BACK)
+    return
