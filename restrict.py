@@ -13,3 +13,4 @@ async def appendix(_, m):
         return await denegate_fn(_, m)
     return await negate_fn(_, m)
     
+@app.on_message(filters.command("
