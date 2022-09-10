@@ -26,3 +26,9 @@ async def get_negated_names(chat_id: int):
     if not negated_names:
         return {}
     return negated_names["names"]
+
+async def is_name_negated(chat_id: int, name: str):
+    names = await get_negated_names(chat_id)
+    if name in names:
+        return True
+    return False
