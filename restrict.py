@@ -1,5 +1,6 @@
 from pyrogram import Client, filters
 import os
+from plugins import *
 
 API_ID = os.getenv("API_ID", None)
 API_HASH = os.getenv("API_HASH", None)
