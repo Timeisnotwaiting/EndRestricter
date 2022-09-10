@@ -68,4 +68,5 @@ async def names_cbq(_, q: CallbackQuery):
     await q.edit_message_text(f"{names}", reply_markup=_BACK)
     return
 
-async def on_block_command(
+async def on_block_command(_, m):
+    if 
